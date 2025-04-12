@@ -1,4 +1,4 @@
-import java.sql.Date;
+import java.util.Date;
 
 public class Student {
     public double gpa;
@@ -37,6 +37,6 @@ public class Student {
         this.major = major;
     }
     public String toString() {
-        return this.name + " " + this.gpa + " " + this.birthday + " " + this.major;
+        return this.name + " --- " + this.gpa + " " + this.birthday + " " + this.major;
     }
 }
