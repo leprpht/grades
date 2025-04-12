@@ -1,3 +1,8 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Scanner;
+
 public class UI {
     public static void mainUI(StudentBook studentBook) {
         System.out.println("===================================");
@@ -10,13 +15,18 @@ public class UI {
     }
     public static void addStudentUI(StudentBook studentBook) {
         System.out.println("Enter student name:");
-        // Code to read input
+        String name = readInput();
         System.out.println("Enter student GPA:");
-        // Code to read input
+        String gpaStr = readInput();
+        double gpa = Double.parseDouble(gpaStr);
         System.out.println("Enter student birthday (YYYY-MM-DD):");
-        // Code to read input
+        String birthdayStr = readInput();
+        LocalDate birthday = LocalDate.parse(birthdayStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        Date birthdayDate = java.sql.Date.valueOf(birthday);
         System.out.println("Enter student major:");
-        // Code to read input
+        String major = readInput();
+        studentBook.addStudent(name, gpa, birthdayDate, major);
+        studentAddedUI();
     }
     public static void viewStudentsUI(StudentBook studentBook) {
         System.out.println("List of all students:");
@@ -25,7 +35,13 @@ public class UI {
     }
     public static void deleteStudentUI(StudentBook studentBook) {
         System.out.println("Enter the name of the student to delete:");
-        // Code to read input
+        String name = readInput();
+        if (studentBook.students.containsKey(name)) {
+            studentBook.removeStudent(name);
+            studentDeletedUI();
+        } else {
+            studentNotFoundUI();
+        }
     }
     public static void exitUI() {
         System.out.println("Exiting the program. Goodbye!");
@@ -42,5 +58,25 @@ public class UI {
     }
     public static void studentDeletedUI() {
         System.out.println("Student deleted successfully.");
+    }
+    public static String readInput() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine().trim();        
+    }
+    public static void readOption(StudentBook studentBook) {
+        String option = readInput();
+        switch (option) {
+            case "1" -> addStudentUI(studentBook);
+            case "2" -> viewStudentsUI(studentBook);
+            case "3" -> deleteStudentUI(studentBook);
+            case "4" -> exitUI();
+            default -> invalidOptionUI();
+        }
+    }
+    public static void cycleUI(StudentBook studentBook) {
+        while (true) {
+            mainUI(studentBook);
+            readOption(studentBook);
+        }
     }
 }

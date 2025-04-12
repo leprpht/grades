@@ -36,7 +36,11 @@ public class Student {
     public void setMajor(String major) {
         this.major = major;
     }
+    @Override
     public String toString() {
-        return this.name + " --- " + this.gpa + " " + this.birthday + " " + this.major;
+        java.text.SimpleDateFormat dayFormat = new java.text.SimpleDateFormat("dd");
+        java.text.SimpleDateFormat monthFormat = new java.text.SimpleDateFormat("MM");
+        java.text.SimpleDateFormat yearFormat = new java.text.SimpleDateFormat("yyyy");
+        return this.name + " --- " + this.gpa + " " + dayFormat.format(this.birthday) + "/" + monthFormat.format(this.birthday) + "/" + yearFormat.format(this.birthday) + " "  + this.major;
     }
 }
