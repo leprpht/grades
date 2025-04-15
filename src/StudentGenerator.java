@@ -1,12 +1,13 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Date;
+import java.util.Scanner;
 
 public class StudentGenerator {
-    public static String generateName() {
-        String[] firstNames = {"Ava", "Liam", "Emma", "Noah", "Olivia", "Elijah", "Sophia", "James", "Isabella", "William", "Mia", "Benjamin", "Charlotte", "Lucas", "Amelia", "Henry", "Harper", "Alexander", "Evelyn", "Michael", "Abigail", "Ethan", "Emily", "Daniel", "Ella", "Matthew", "Elizabeth", "Sebastian", "Camila", "Jackson", "Luna", "Aiden", "Sofia", "Logan", "Avery", "David", "Mila", "Joseph", "Aria", "Samuel", "Scarlett", "Carter", "Penelope", "Owen", "Layla", "Wyatt", "Chloe", "John", "Victoria", "Jack", "Madison", "Luke", "Eleanor", "Jayden", "Grace", "Dylan", "Nora", "Grayson", "Riley", "Levi", "Zoey", "Isaac", "Hannah", "Gabriel", "Hazel", "Julian", "Lily", "Mateo", "Ellie", "Anthony", "Violet", "Jaxon", "Lillian", "Lincoln", "Zoe", "Joshua", "Stella", "Christopher", "Aurora", "Andrew", "Natalie", "Theodore", "Emilia", "Caleb", "Everly", "Ryan", "Leah", "Asher", "Aubrey", "Nathan", "Willow", "Thomas", "Addison", "Leo", "Lucy", "Isaiah", "Audrey", "Charles", "Bella", "Josiah", "Sophie", "Hudson", "Sadie", "Christian", "Skylar", "Hunter", "Ivy", "Eli", "Kinsley", "Jonathan", "Claire", "Jeremiah", "Aaliyah", "Ezekiel", "Brielle", "Colton", "Elena", "Landon", "Vivian", "Adrian", "Gianna", "Robert", "Naomi", "Angel", "Everleigh", "Maverick", "Kaylee", "Nicholas", "Samantha"};
-        int randomIndex1 = (int) (Math.random() * firstNames.length);
-        String[] lastNames = {"Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson", "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores", "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts", "Gomez", "Phillips", "Evans", "Turner", "Diaz", "Parker", "Cruz", "Edwards", "Collins", "Reyes", "Stewart", "Morris", "Morales", "Murphy", "Cook", "Rogers", "Gutierrez", "Ortiz", "Morgan", "Cooper", "Peterson", "Bailey", "Reed", "Kelly", "Howard", "Ramos", "Kim", "Cox", "Ward", "Richardson", "Watson", "Brooks", "Chavez", "Wood", "James", "Bennett", "Gray", "Mendoza", "Ruiz", "Hughes", "Price", "Alvarez", "Castillo", "Sanders", "Patel", "Myers", "Long", "Ross", "Foster", "Jimenez", "Powell", "Jenkins", "Perry", "Russell", "Sullivan", "Bell", "Coleman", "Butler", "Henderson", "Barnes", "Gonzales", "Fisher", "Vasquez", "Simmons", "Romero", "Jordan", "Patterson", "Alexander", "Hamilton", "Graham", "Reyes", "Mendez"};
-        int randomIndex2 = (int) (Math.random() * lastNames.length);
-        return firstNames[randomIndex1] + " " + lastNames[randomIndex2];
+    public static String generateName(String[] firstNames, String[] lastNames) {
+        int randomFirstNameIndex = (int) (Math.random() * firstNames.length);
+        int randomLastNameIndex = (int) (Math.random() * lastNames.length);
+        return firstNames[randomFirstNameIndex].trim() + " " + lastNames[randomLastNameIndex].trim();
     }
     public static Date generateBirthday() {
         int year = (int) (Math.random() * 11) + 1995;
@@ -27,7 +28,7 @@ public class StudentGenerator {
         return majors[randomIndex];
     }
     public static Student generateStudent() {
-        return new Student(generateName(), generateGPA(), generateBirthday(), generateMajor());
+        return new Student(generateName(readFirstNames(), readLastNames()), generateGPA(), generateBirthday(), generateMajor());
     }
     public static StudentBook generateStudentBook(int number) {
         StudentBook studentBook = new StudentBook();
@@ -40,5 +41,35 @@ public class StudentGenerator {
             studentBook.addStudent(name, gpa, birthday, major);
         }
         return studentBook;
+    }
+    public static String[] readFirstNames() {
+        String[] firstNames = new String[0];
+        try {
+            File file = new File("src/FirstNames.txt");
+            Scanner scanner = new Scanner(file);
+            StringBuilder names = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                names.append(scanner.nextLine());
+            }
+            firstNames = names.toString().split(",");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        return firstNames;
+    }
+    public static String[] readLastNames() {
+        String[] lastNames = new String[0];
+        try {
+            File file = new File("src/LastNames.txt");
+            Scanner scanner = new Scanner(file);
+            StringBuilder names = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                names.append(scanner.nextLine());
+            }
+            lastNames = names.toString().split(",");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        return lastNames;
     }
 }

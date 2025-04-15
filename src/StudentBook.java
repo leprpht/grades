@@ -1,6 +1,6 @@
-import java.util.Map;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class StudentBook {
     public Map<String, Student> students;
@@ -19,8 +19,10 @@ public class StudentBook {
         }
     }
     public void viewStudents() {
+        int i = 1;
         for (Map.Entry<String, Student> entry : this.students.entrySet()) {
-            System.out.println(entry.getValue().toString());
+            System.out.println(i + ". " + entry.getValue().toString());
+            i++;
         }
     }
 }
