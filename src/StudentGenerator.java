@@ -22,13 +22,12 @@ public class StudentGenerator {
         gpa = Math.round(gpa * 100.0) / 100.0;
         return gpa;
     }
-    public static String generateMajor() {
-        String[] majors = {"Computer Science", "Mathematics", "Physics", "Chemistry", "Biology", "Engineering", "Economics", "Psychology", "History", "Political Science", "Sociology", "Philosophy", "Linguistics", "Anthropology", "Art History", "Music", "Theater", "Dance", "Film Studies", "Creative Writing"};
-        int randomIndex = (int) (Math.random() * majors.length);
-        return majors[randomIndex];
+    public static String generateMajor(String[] majors) {
+        int randomMajorIndex = (int) (Math.random() * majors.length);
+        return majors[randomMajorIndex].trim();
     }
     public static Student generateStudent() {
-        return new Student(generateName(readFirstNames(), readLastNames()), generateGPA(), generateBirthday(), generateMajor());
+        return new Student(generateName(readFirstNames(), readLastNames()), generateGPA(), generateBirthday(), generateMajor(readMajors()));
     }
     public static StudentBook generateStudentBook(int number) {
         StudentBook studentBook = new StudentBook();
@@ -71,5 +70,20 @@ public class StudentGenerator {
             System.out.println("File not found.");
         }
         return lastNames;
+    }
+    public static String[] readMajors() {
+        String[] majors = new String[0];
+        try {
+            File file = new File("src/Majors.txt");
+            Scanner scanner = new Scanner(file);
+            StringBuilder names = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                names.append(scanner.nextLine());
+            }
+            majors = names.toString().split(",");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+        return majors;
     }
 }
