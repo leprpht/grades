@@ -25,4 +25,13 @@ public class StudentBook {
             i++;
         }
     }
+    public String viewStudentsString() {
+        StringBuilder studentsList = new StringBuilder();
+        int i = 1;
+        for (Map.Entry<String, Student> entry : this.students.entrySet()) {
+            studentsList.append(i).append(". ").append(entry.getValue().toString()).append("\n");
+            i++;
+        }
+        return studentsList.toString();
+    }
 }

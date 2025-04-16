@@ -11,6 +11,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class App {
@@ -142,20 +144,70 @@ public class App {
 
 
 
+        // Show All Students
+        JPanel viewStudentsPanel = new JPanel();
+        viewStudentsPanel.setBackground(new Color(125, 135, 150));
+        viewStudentsPanel.setLayout(new BoxLayout(viewStudentsPanel, BoxLayout.Y_AXIS));
+
+        JTextArea viewStudentsArea = new JTextArea(20, 50);
+        viewStudentsArea.setEditable(false);
+        viewStudentsArea.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        viewStudentsArea.setForeground(Color.GRAY);
+        viewStudentsArea.setText(studentBook.viewStudentsString());
+
+        JScrollPane scrollPane = new JScrollPane(viewStudentsArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setPreferredSize(new Dimension(700, 400));
+
+        JPanel viewStudentsList = new JPanel();
+        viewStudentsList.add(Box.createRigidArea(new Dimension(20, 20)));
+        viewStudentsList.add(scrollPane);
+        viewStudentsList.add(Box.createRigidArea(new Dimension(20, 20)));
+        viewStudentsList.setBackground(new Color(125, 135, 150));
+        viewStudentsPanel.setLayout(new BoxLayout(viewStudentsPanel, BoxLayout.X_AXIS));
+
+
+        viewStudentsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        viewStudentsPanel.add(viewStudentsList);
+
+
+
+
+
 
         cardPanel.add(mainMenu, "mainMenu");
         cardPanel.add(addStudentPanel, "addStudent");
+        cardPanel.add(viewStudentsPanel, "viewStudents");
 
-
-        // Main Menu
         // Button Actions 
+        // Main Menu
         addStudentBtn.addActionListener(e -> cardLayout.show(cardPanel, "addStudent"));
-        // viewStudentsBtn.addActionListener(e -> cardLayout.show(cardPanel, "viewStudents"));
+        viewStudentsBtn.addActionListener(e -> cardLayout.show(cardPanel, "viewStudents"));
         // deleteStudentBtn.addActionListener(e -> cardLayout.show(cardPanel, "deleteStudent"));
         exitBtn.addActionListener(e -> System.exit(0));
+        // Add Student
+        addStudentSubmitBtn.addActionListener(e -> {
+            if (nameField.getText().isEmpty() || gpaField.getText().isEmpty() || majorField.getText().isEmpty() || birthdayField.getText().isEmpty()) {
+                System.out.println("Please fill in all fields.");
+
+                return;
+            }
+            String birthdayStr = birthdayField.getText();
+            String[] dateParts = birthdayStr.split("/");
+            int day = Integer.parseInt(dateParts[0]);
+            int month = Integer.parseInt(dateParts[1]);
+            int year = Integer.parseInt(dateParts[2]);
+            java.time.LocalDate localDate = java.time.LocalDate.of(year, month, day);
+            java.util.Date birthday = java.sql.Date.valueOf(localDate);
+            studentBook.addStudent(nameField.getText(), Double.parseDouble(gpaField.getText()), birthday, majorField.getText());
+            cardLayout.show(cardPanel, "mainMenu");
+        });
+        cancelBtn.addActionListener(e -> cardLayout.show(cardPanel, "mainMenu"));
+
+
 
         frame.add(cardPanel);
         frame.setVisible(true);
-
     }
 }
