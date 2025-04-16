@@ -165,11 +165,10 @@ public class App {
         viewStudentsList.add(scrollPane);
         viewStudentsList.add(Box.createRigidArea(new Dimension(20, 20)));
         viewStudentsList.setBackground(new Color(125, 135, 150));
-        viewStudentsPanel.setLayout(new BoxLayout(viewStudentsPanel, BoxLayout.X_AXIS));
-
 
         viewStudentsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         viewStudentsPanel.add(viewStudentsList);
+        viewStudentsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
 
 
@@ -201,10 +200,14 @@ public class App {
             java.time.LocalDate localDate = java.time.LocalDate.of(year, month, day);
             java.util.Date birthday = java.sql.Date.valueOf(localDate);
             studentBook.addStudent(nameField.getText(), Double.parseDouble(gpaField.getText()), birthday, majorField.getText());
+            viewStudentsArea.setText(studentBook.viewStudentsString());
+            nameField.setText("");
+            gpaField.setText("");
+            majorField.setText("");
+            birthdayField.setText("");
             cardLayout.show(cardPanel, "mainMenu");
         });
         cancelBtn.addActionListener(e -> cardLayout.show(cardPanel, "mainMenu"));
-
 
 
         frame.add(cardPanel);
