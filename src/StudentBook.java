@@ -1,11 +1,11 @@
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class StudentBook {
     public Map<String, Student> students;
     public StudentBook() {
-        this.students = new HashMap<>();
+        this.students = new TreeMap<>();
     }
     public void addStudent(String name, double gpa, Date birthday, String major) {
         Student student = new Student(name, gpa, birthday, major);
