@@ -31,9 +31,19 @@ public class StudentGenerator {
     }
     public static StudentBook generateStudentBook(int number) {
         StudentBook studentBook = new StudentBook();
+        int repeatCount = 0;
         for (int i = 0; i < number; i++) {
+            if (repeatCount > 10) {
+                System.out.println("Too many attempts to generate a unique student. Stopping generation.");
+                break;
+            }
             Student student = generateStudent();
             String name = student.getName();
+            if (studentBook.students.containsKey(name)) {
+                i--;
+                repeatCount++;
+                continue;
+            }
             double gpa = student.getGpa();
             Date birthday = student.getBirthday();
             String major = student.getMajor();

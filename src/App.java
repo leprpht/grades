@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
+import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,7 +19,22 @@ import javax.swing.JTextField;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        StudentBook studentBook = StudentGenerator.generateStudentBook(50);
+        File file = new File("src/GeneratorSetup.txt");
+        Scanner scanner = new Scanner(file);
+        final StudentBook studentBook;
+        if (scanner.hasNextInt()) {
+            int number = scanner.nextInt();
+            if (number < 0) {
+            number = 0;
+            } else if (number > 300) {
+                number = 300;
+            }
+            studentBook = StudentGenerator.generateStudentBook(number);
+        } else {
+            System.out.println("No valid integer found in the file.");
+            studentBook = new StudentBook();
+        }
+        scanner.close();
 
         //Main Menu
         JFrame frame = new JFrame("Student Management System");
@@ -166,9 +183,19 @@ public class App {
         viewStudentsList.add(Box.createRigidArea(new Dimension(20, 20)));
         viewStudentsList.setBackground(new Color(125, 135, 150));
 
+        JButton viewStudentsBackBtn = new JButton("Back to Main Menu");
+        viewStudentsBackBtn.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        viewStudentsBackBtn.setBackground(new Color(30, 144, 255));
+        viewStudentsBackBtn.setForeground(Color.WHITE);
+        viewStudentsBackBtn.setFocusPainted(false);
+        viewStudentsBackBtn.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        viewStudentsBackBtn.setMaximumSize(new Dimension(250, 40));
+        viewStudentsBackBtn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        viewStudentsBackBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         viewStudentsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         viewStudentsPanel.add(viewStudentsList);
-        viewStudentsPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        viewStudentsPanel.add(viewStudentsBackBtn);
 
 
 
@@ -208,6 +235,8 @@ public class App {
             cardLayout.show(cardPanel, "mainMenu");
         });
         cancelBtn.addActionListener(e -> cardLayout.show(cardPanel, "mainMenu"));
+        // View Students
+        viewStudentsBackBtn.addActionListener(e -> cardLayout.show(cardPanel, "mainMenu"));
 
 
         frame.add(cardPanel);
